@@ -247,6 +247,9 @@ class CouldNotFindQtPluginErrorFindFrameworkError(Error):
 class InstallNameToolError(Error):
   pass
 
+class CouldNotFindFrameworkError(Error):
+  pass
+
 
 class CouldNotFindQtPluginError(Error):
   pass
