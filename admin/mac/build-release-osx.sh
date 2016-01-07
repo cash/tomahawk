@@ -46,7 +46,7 @@ CERT_SIGNER=$2
     cd ..
     if [ -f ~/sign_step.sh ];
     then
-        ~/sign_step.sh "$CERT_SIGNER" "Tomahawk.app" || true
+        ~/sign_step.sh "$CERT_SIGNER" "${TARGET_NAME}.app" || true
     fi
 
     header "Creating DMG"
@@ -54,6 +54,6 @@ CERT_SIGNER=$2
     mv "${TARGET_NAME}.dmg" "${TARGET_NAME}-$VERSION.dmg"
 
     header "Creating signed Sparkle update"
-#     $ROOT/../admin/mac/sign_bundle.rb $VERSION ~/tomahawk_sparkle_privkey.pem
+#     $ROOT/../admin/mac/sign_bundle.rb "${TARGET_NAME}" $VERSION ~/tomahawk_sparkle_privkey.pem
 
     header "Done!"
