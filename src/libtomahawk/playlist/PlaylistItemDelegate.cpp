@@ -125,16 +125,16 @@ PlaylistItemDelegate::createEditor( QWidget* parent, const QStyleOptionViewItem&
     PlayableItem* item = m_model->itemFromIndex( m_model->mapToSource( index ) );
     Q_ASSERT( item );
 
-    if ( index.column() == PlayableModel::Download && item->result() && !item->result()->downloadFormats().isEmpty() &&
+    if ( /*index.column() == PlayableModel::Download &&*/ item->result() && !item->result()->downloadFormats().isEmpty() &&
          !DownloadManager::instance()->localFileForDownload( item->result()->downloadFormats().first().url.toString() ).isEmpty() )
     {
         QDesktopServices::openUrl( QUrl::fromLocalFile( QFileInfo( DownloadManager::instance()->localFileForDownload( item->result()->downloadFormats().first().url.toString() ) ).absolutePath() ) );
     }
-    else if ( index.column() == PlayableModel::Download && item->result() && item->result()->downloadJob() && item->result()->downloadJob()->state() == DownloadJob::Finished )
+    else if ( /*index.column() == PlayableModel::Download &&*/ item->result() && item->result()->downloadJob() && item->result()->downloadJob()->state() == DownloadJob::Finished )
     {
         QDesktopServices::openUrl( QUrl::fromLocalFile( QFileInfo( item->result()->downloadJob()->localFile() ).absolutePath() ) );
     }
-    else if ( index.column() == PlayableModel::Download && item->result() &&
+    else if ( /*index.column() == PlayableModel::Download &&*/ item->result() &&
               !item->result()->downloadFormats().isEmpty() && !item->result()->downloadJob() )
     {
         QStringList formats;
