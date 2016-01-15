@@ -23,12 +23,13 @@
 
 #include "audio/AudioEngine.h"
 #include "ViewManager.h"
+#include "Source.h"
+#include "MetaPlaylistInterface.h"
 #include "database/Database.h"
 #include "playlist/TreeModel.h"
 #include "playlist/PlayableModel.h"
-#include "Source.h"
-#include "MetaPlaylistInterface.h"
 #include "playlist/TrackView.h"
+#include "playlist/TrackDetailView.h"
 #include "widgets/BasicHeader.h"
 
 #include "database/DatabaseCommand_AllTracks.h"
@@ -58,16 +59,17 @@ AlbumInfoWidget::AlbumInfoWidget( const Tomahawk::album_ptr& album, QWidget* par
     m_tracksModel->setMode( Mixed );
 
     // We need to set the model on the view before loading the playlist, so spinners & co are connected
+    ui->albumView->trackDetailView()->setBuyButtonVisible( true );
     ui->albumView->trackView()->setPlayableModel( m_tracksModel );
     ui->albumView->setCaption( tr( "Album Details" ) );
 
-/*    ui->topHits->setStyleSheet( QString( "QListView { background-color: %1; }" ).arg( TomahawkStyle::PAGE_BACKGROUND.name() ) );
+    ui->topHits->setStyleSheet( QString( "QListView { background-color: %1; }" ).arg( TomahawkStyle::PAGE_BACKGROUND.name() ) );
     TomahawkStyle::stylePageFrame( ui->trackFrame );
     ui->topHits->setVisible( false );
-    ui->topHitsLabel->setVisible( false );*/
+    ui->topHitsLabel->setVisible( false );
 
     {
-/*        QScrollArea* area = new QScrollArea();
+        QScrollArea* area = new QScrollArea();
         area->setWidgetResizable( true );
         area->setVerticalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
         area->setWidget( widget );
@@ -77,17 +79,17 @@ AlbumInfoWidget::AlbumInfoWidget( const Tomahawk::album_ptr& album, QWidget* par
         area->setPalette( pal );
         area->setAutoFillBackground( true );
         area->setFrameShape( QFrame::NoFrame );
-        area->setAttribute( Qt::WA_MacShowFocusRect, 0 );*/
+        area->setAttribute( Qt::WA_MacShowFocusRect, 0 );
 
         QVBoxLayout* layout = new QVBoxLayout();
         layout->addWidget( m_headerWidget );
-        layout->addWidget( widget );
+        layout->addWidget( area );
         setLayout( layout );
         TomahawkUtils::unmarginLayout( layout );
     }
 
     MetaPlaylistInterface* mpl = new MetaPlaylistInterface();
-//    mpl->addChildInterface( ui->topHits->playlistInterface() );
+    mpl->addChildInterface( ui->topHits->playlistInterface() );
     mpl->addChildInterface( ui->albumView->playlistInterface() );
     m_playlistInterface = playlistinterface_ptr( mpl );
 
@@ -115,8 +117,8 @@ AlbumInfoWidget::isBeingPlayed() const
     if ( ui->albumView && ui->albumView->isBeingPlayed() )
         return true;
 
-/*    if ( ui->topHits && ui->topHits->playlistInterface() == AudioEngine::instance()->currentTrackPlaylist() )
-        return true;*/
+    if ( ui->topHits && ui->topHits->playlistInterface() == AudioEngine::instance()->currentTrackPlaylist() )
+        return true;
 
     return false;
 }
